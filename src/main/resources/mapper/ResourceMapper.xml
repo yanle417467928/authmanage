@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanle.mapper.ResourceMapper">
+    <!-- 通用查询结果列-->
+    <sql id="Resource_Base_Column_List">
+        id, name, url, open_mode, description,icon,pid,seq,status,resource_type,create_time
+    </sql>
+    <select id="selectByResourceType"  resultType="Resource">
+        select <include refid="Resource_Base_Column_List"/>
+        FROM resource
+        where resource_type = #{resourceType}
+    </select>
+    <select id="selectAll" resultType="Resource">
+      select <include refid="Resource_Base_Column_List"/>
+        FROM resource
+        ORDER BY seq
+    </select>
+
+    <select id="selectById" resultType="Resource">
+        SELECT <include refid="Resource_Base_Column_List"/>
+        FROM  resource
+        where id= #{id}
+    </select>
+    <update id="updateResource" parameterType="Resource">
+        UPDATE resource
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name !=null">name = #{name},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="openMode != null">open_mode = #{openMode},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="resourceType">resource_type = #{resourceType},</if>
+            <if test="seq != null">seq = #{seq},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="pid != null">pid = #{pid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM resource WHERE id= #{id}
+    </delete>
+    <insert id="insert" parameterType="Resource">
+        INSERT INTO resource(id,name,url,open_mode,description,icon,pid,seq,status,resource_type,create_time)
+        VALUES(#{id},#{name},#{url},#{open_mode},#{description},#{icon},#{pid},#{seq},#{status},#{resource_type},#{create_time})
+    </insert>
+
+</mapper>

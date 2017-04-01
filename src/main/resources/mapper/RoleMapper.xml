@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanle.mapper.RoleMapper">
+    <!-- 通用查询结果列-->
+    <sql id="Role_Base_Column_List">
+        id, name, seq, description, status
+    </sql>
+    <select id="selectResourceListByRoleId" parameterType="java.lang.Long" resultType="java.util.HashMap">
+        SELECT
+            rs.id AS id,
+            s.url AS url
+        FROM
+            role r
+            LEFT JOIN role_resource rs ON r.id = rs.role_id
+            LEFT JOIN resource s ON rs.resource_id = s.id
+        WHERE
+            role_id = #{roleId};
+    </select>
+    <select id="selectById" parameterType="java.lang.Long" resultType="Role">
+        SELECT <include refid="Role_Base_Column_List"/>
+        FROM role
+        where id=#{id}
+    </select>
+    <select id="selectResourceListByRoleIdList" parameterType="java.lang.Long" resultType="Resource">
+        SELECT
+            s.id AS id,
+            s.`name` AS `name`,
+            s.url AS url,
+            s.description AS description,
+            s.icon AS icon,
+            s.pid AS pid,
+            s.seq AS seq,
+            s.`status` AS `status`,
+            s.open_mode AS openMmode,
+            s.resource_type AS resourceType,
+            s.create_time AS createTime
+        FROM
+            role r
+            LEFT JOIN role_resource rs ON r.id = rs.role_id
+            LEFT JOIN resource s ON rs.resource_id = s.id
+        WHERE
+            r.id IN
+          <foreach item="item" index="index" collection="list" open="" separator="," close="">
+                #{item}
+          </foreach>
+          AND s.resource_type=0
+          ORDER BY s.seq
+    </select>
+    <select id="selectRoleList" resultType="Role">
+        SELECT <include refid="Role_Base_Column_List"/>
+        FROM role
+        ORDER BY ${sort} ${order}
+    </select>
+</mapper>

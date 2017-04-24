@@ -4,6 +4,7 @@ import com.yanle.entity.PageInfo;
 import com.yanle.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,4 +42,11 @@ public class RoleController extends BaseController {
         roleService.selectDataGrid(pageInfo);
         return pageInfo;
     }
+
+    @GetMapping("/addPage")
+    public String addPage(){
+        return "roleAdd";
+    }
+
+
 }

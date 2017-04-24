@@ -42,7 +42,7 @@
             LEFT JOIN resource s ON rs.resource_id = s.id
         WHERE
             r.id IN
-          <foreach item="item" index="index" collection="list" open="" separator="," close="">
+          <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
                 #{item}
           </foreach>
           AND s.resource_type=0
